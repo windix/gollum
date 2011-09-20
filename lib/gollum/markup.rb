@@ -59,9 +59,9 @@ module Gollum
     end
 
     def doc_to_html(doc)
-      doc = doc.to_xhtml(:save_with => Nokogiri::XML::Node::SaveOptions::AS_XHTML)
-      doc.gsub!(/<pre>[\s\n]*<code/, "<pre><code")
-      doc.gsub!(/\n<\/code>\n<\/pre>/, "</code></pre>")
+      doc.to_xhtml(:save_with => Nokogiri::XML::Node::SaveOptions::AS_XHTML).
+        gsub(/<pre>[\s\n]*<code/, "<pre><code").
+        gsub(/\n<\/code>\n<\/pre>/, "</code></pre>")
     end
 
     #########################################################################
