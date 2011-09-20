@@ -466,7 +466,7 @@ module Gollum
 
         doc  = Nokogiri::HTML::DocumentFragment.parse(data)
 
-        doc.search('pre').each do |node|
+        doc.search('code').each do |node|
           next unless lang = node['lang']
           text = node.inner_text
           html = Gollum::Albino.colorize(text, lang)
