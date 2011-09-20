@@ -470,7 +470,7 @@ module Gollum
           next unless lang = node['class']
           text = node.inner_text
           html = Gollum::Albino.colorize(text, lang)
-          node.replace(html)
+          node.parent.replace(html)
         end
 
         doc  = sanitize.clean_node!(doc) if sanitize
