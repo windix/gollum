@@ -451,16 +451,15 @@ module Gollum
         data = extract_tex(@data.dup)
         data = extract_tags(data)
 
-        flags = [
-          :autolink,
-          :fenced_code,
-          :tables,
-          :strikethrough,
-          :lax_htmlblock,
-          :gh_blockcode,
-          :no_intraemphasis
-        ]
-        data = Redcarpet.new(data, *flags).to_html
+        flags = {
+          :autolink => true,
+          :fenced_code_blocks => true,
+          :tables => true,
+          :strikethrough => true,
+          :lax_html_blocks => true,
+          :no_intra_emphasis => true
+        }
+        data = Redcarpet::Markdown.new(Redcarpet::Render::HTML, flags).render(data)
         data = process_tags(data)
 
         doc  = Nokogiri::HTML::DocumentFragment.parse(data)
