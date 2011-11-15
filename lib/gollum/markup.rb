@@ -1,5 +1,6 @@
 require 'digest/sha1'
 require 'cgi'
+require 'pygments'
 
 module Gollum
 
@@ -13,7 +14,7 @@ module Gollum
       @wiki    = page.wiki
       @name    = page.filename
       @data    = page.text_data
-      @version = page.version.id
+      @version = page.version.id if page.version
       @format  = page.format
       @dir     = ::File.dirname(page.path)
       @tagmap  = {}
@@ -400,9 +401,8 @@ module Gollum
       end
 
       highlighted = begin
-        blocks.size.zero? ? [] : Gollum::Albino.colorize(blocks)
-      rescue ::Albino::ShellArgumentError, ::Albino::TimeoutExceeded,
-               ::Albino::MaximumOutputExceeded
+        blocks.map { |lang, code| Pygments.highlight(code, :lexer => lang) }
+      rescue ::RubyPython::PythonError
         []
       end
 
@@ -443,6 +443,7 @@ module Gollum
 
   begin
     require 'redcarpet'
+    require 'redcarpet/render_man'
 
     class MarkupGFM < Markup
       def render(no_follow = false)
@@ -451,6 +452,7 @@ module Gollum
           @wiki.sanitizer
 
         data = extract_tex(@data.dup)
+        data = extract_code(data)
         data = extract_tags(data)
 
         flags = {
@@ -463,14 +465,18 @@ module Gollum
         }
         data = Redcarpet::Markdown.new(Redcarpet::Render::HTML, flags).render(data)
         data = process_tags(data)
+        data = process_code(data)
 
         doc  = Nokogiri::HTML::DocumentFragment.parse(data)
 
         doc.search('code').each do |node|
           next unless lang = node['class']
+          next unless lexer = Pygments::Lexer[lang]
           text = node.inner_text
-          html = Gollum::Albino.colorize(text, lang)
+          #html = Gollum::Albino.colorize(text, lang)
+          html = lexer.highlight(text)
           node.parent.replace(html)
+          #node.replace(html)
         end
 
         doc  = sanitize.clean_node!(doc) if sanitize

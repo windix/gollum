@@ -24,7 +24,7 @@ Gem::Specification.new do |s|
 
   s.add_dependency('grit', "~> 2.4.1")
   s.add_dependency('github-markup', [">= 0.4.0", "< 1.0.0"])
-  s.add_dependency('albino', "~> 1.3.2")
+  s.add_dependency('pygments.rb', "~> 0.2.0")
   s.add_dependency('sinatra', "~> 1.0")
   s.add_dependency('mustache', [">= 0.11.2", "< 1.0.0"])
   s.add_dependency('sanitize', "~> 2.0.0")
@@ -52,7 +52,6 @@ Gem::Specification.new do |s|
     docs/sanitization.md
     gollum.gemspec
     lib/gollum.rb
-    lib/gollum/albino.rb
     lib/gollum/blob_entry.rb
     lib/gollum/committer.rb
     lib/gollum/file.rb
@@ -797,6 +796,20 @@ Gem::Specification.new do |s|
     test/examples/yubiwa.git/objects/ac/e97abf2b177815a1972d7db22f229f58c83309
     test/examples/yubiwa.git/objects/b1/f443863a4816628807fbf86141ebef055dda34
     test/examples/yubiwa.git/refs/heads/master
+    test/examples/empty.git/info/exclude
+    test/examples/empty.git/hooks/pre-commit.sample
+    test/examples/empty.git/hooks/pre-rebase.sample
+    test/examples/empty.git/hooks/post-update.sample
+    test/examples/empty.git/hooks/applypatch-msg.sample
+    test/examples/empty.git/hooks/prepare-commit-msg.sample
+    test/examples/empty.git/hooks/commit-msg.sample
+    test/examples/empty.git/hooks/post-receive.sample
+    test/examples/empty.git/hooks/post-commit.sample
+    test/examples/empty.git/hooks/update.sample
+    test/examples/empty.git/hooks/pre-applypatch.sample
+    test/examples/empty.git/config
+    test/examples/empty.git/HEAD
+    test/examples/empty.git/description
     test/helper.rb
     test/test_app.rb
     test/test_committer.rb
